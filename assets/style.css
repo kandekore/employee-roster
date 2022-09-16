@@ -1,0 +1,46 @@
+/* .card {
+  width: 30% !important;
+  margin-left: 35% !important;
+  margin-right: 35% !important;
+} */
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  position: relative;
+  align-items: center;
+  justify-content: space-evenly;
+  /* width: 145%;*/
+  padding: 40px;
+}
+
+.card {
+  margin-bottom: 25px;
+}
+
+.card-header.engineer {
+  background: blue;
+  color: white;
+}
+
+.card-header.intern {
+  background: yellow;
+}
+
+.card-header.manager {
+  background: green;
+  color: white;
+}
+.bg-light {
+  --bs-bg-opacity: 1;
+  background-color: red !important;
+  color: white !important;
+}
+body {
+  background: azure;
+}
+span.navbar-brand.mb-0.h1 {
+  color: white;
+  font-size: 40px;
+}

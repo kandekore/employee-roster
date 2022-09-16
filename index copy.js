@@ -20,25 +20,26 @@ const generateHTML = ({ name, employeeid, email, officenumber }) => `
   <body>
     <nav class="navbar bg-light">
       <div class="container-fluid">
-        <span class="navbar-brand mb-0 h1">Employee Roster</span>
+        <span class="navbar-brand mb-0 h1">Navbar</span>
       </div>
     </nav>
-    <div class="flex-container">
+    <div class="container-md">
       <div class="card" style="width: 18rem">
-        <div class="card-header manager">Manager</div>
+        <div class="card-header">Manager</div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">Name: ${name}</li>
           <li class="list-group-item">Employee ID: ${employeeid}</li>
-          <li class="list-group-item">Email Address:<a href="mailto:${email}">${email}</a></li>
+          <li class="list-group-item">Email Address: ${email}</li>
           <li class="list-group-item">Office Number: ${officenumber} </li>
         </ul>
       </div>
-    
-    
+    </div>
+    <div id="team">
       
-
+ 
 `;
-const footer = () => ` </div>
+
+const footer = ({}) => ` </div>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
@@ -47,36 +48,6 @@ const footer = () => ` </div>
   ></script>
 </body>
 </html>>`;
-
-const engineer = ({
-  nameeng,
-  employeeideng,
-  emaileng,
-  officenumbereng,
-}) => `  <div class="card" style="width: 18rem">
-<div class="card-header engineer">Engineer</div>
-<ul class="list-group list-group-flush">
-  <li class="list-group-item">Name: ${nameeng}</li>
-  <li class="list-group-item">Employee ID: ${employeeideng}</li>
-  <li class="list-group-item">Email Address:<a href="mailto:${emaileng}">${emaileng}</a></li>
-  <li class="list-group-item">Office Number: ${officenumbereng} </li>
-</ul>
-</div>`;
-
-const intern = ({
-  nameint,
-  employeeidint,
-  emailint,
-  officenumberint,
-}) => `  <div class="card" style="width: 18rem">
-<div class="card-header intern">Intern</div>
-<ul class="list-group list-group-flush">
-  <li class="list-group-item">Name: ${nameint}</li>
-  <li class="list-group-item">Employee ID: ${employeeidint}</li>
-  <li class="list-group-item">Email Address:<a href="mailto:${emailint}">${emailint}</a></li>
-  <li class="list-group-item">Office Number: ${officenumberint} </li>
-</ul>
-</div>`;
 
 function managerInput() {
   inquirer
@@ -137,27 +108,43 @@ function managerInput() {
 
 managerInput();
 
+function finish() {
+  console.log("Thank you for your entries");
+  fs.appendFile("index.html", footer, (err) => {
+    err ? console.log(err) : console.log("");
+  });
+}
+
+// function htmlengineer(name, employeeid, ) {
+
+// //   var d1 = document.getElementById('one');
+// // d1.insertAdjacentHTML('beforeend', '    <div class="card" style="width: 18rem"><div class="card-header">Manager</div><ul class="list-group list-group-flush">  <li class="list-group-item">Name:' + ${name} +'</li>  <li class="list-group-item">Employee ID: ${employeeid}</li>  <li class="list-group-item">Email Address: ${email}</li> <li class="list-group-item">Office Number: ${officenumber} </li></ul></div>');
+
+//   var htm = "";
+//   htm += "<div class='card' style='width: 18rem'><div class='card-header'>Engineer</div><ul class='list-group list-group-flush'><li class='list-group-item'>Name: "+ ${name} +"</li><li class='list-group-item'>Employee ID: "+${employeeid} + "</li><li class='list-group-item'>Email Address: " + ${email} + "</li><li class='list-group-item'>Office Number: " + ${officenumber} +"</li></ul></div>"
+// }
+
 function engineerInput() {
   inquirer
     .prompt([
       {
-        name: "nameeng",
+        name: "Name",
         message: "Engineer Name?",
         type: "input",
       },
       {
-        name: "employeeideng",
+        name: "employeeid",
         message: "Employee ID?",
         type: "input",
       },
       {
-        name: "emaileng",
+        name: "email",
         message: "Email Address?",
         type: "input",
         //   validate: emailValidator,
       },
       {
-        name: "officenumbereng",
+        name: "officenumber",
         message: "Office Number",
         type: "input",
       },
@@ -178,18 +165,16 @@ function engineerInput() {
         ],
       },
     ])
-    .then(async (answerseng) => {
-      const htmleng = engineer(answerseng);
+    .then(async (answers) => {
+      const html = generateHTML(answers);
 
-      fs.appendFile("index.html", htmleng, (err) => {
-        err ? console.log(err) : console.log("");
-      });
+      appendEntry();
 
-      if (answerseng.menu === "Finish") {
+      if (answers.menu === "Finish") {
         finish();
-      } else if (answerseng.menu === "Engineer") {
+      } else if (answers.menu === "Engineer") {
         engineerInput();
-      } else if (answerseng.menu === "Intern") {
+      } else if (answers.menu === "Intern") {
         internInput();
       }
     });
@@ -198,23 +183,23 @@ function internInput() {
   inquirer
     .prompt([
       {
-        name: "nameint",
+        name: "Name",
         message: "Intern Name?",
         type: "input",
       },
       {
-        name: "employeeidint",
+        name: "employeeid",
         message: "Employee ID?",
         type: "input",
       },
       {
-        name: "emailint",
+        name: "email",
         message: "Email Address?",
         type: "input",
         //   validate: emailValidator,
       },
       {
-        name: "officenumberint",
+        name: "officenumber",
         message: "Office Number",
         type: "input",
       },
@@ -235,26 +220,18 @@ function internInput() {
         ],
       },
     ])
-    .then(async (answersint) => {
-      const htmlint = intern(answersint);
-      fs.appendFile("index.html", htmlint, (err) => {
+    .then(async (answers) => {
+      const html = generateHTML(answers);
+      fs.appendFile("README.md", testsection, (err) => {
         err ? console.log(err) : console.log("");
       });
 
-      if (answersint.menu === "Finish") {
+      if (answers.menu === "Finish") {
         finish();
-      } else if (answersint.menu === "Engineer") {
+      } else if (answers.menu === "Engineer") {
         engineerInput();
-      } else if (answersint.menu === "Intern") {
+      } else if (answers.menu === "Intern") {
         internInput();
       }
     });
-}
-
-function finish() {
-  console.log("Thank you for your entries");
-  const end = footer();
-  fs.appendFile("index.html", end, (err) => {
-    err ? console.log(err) : console.log("");
-  });
 }
