@@ -4,7 +4,7 @@
   "description": "Employee Work tree",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "jest --verbose test/*"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   "dependencies": {
     "email-validator": "^2.0.4",
     "fs": "^0.0.1-security",
-    "inquirer": "^8.2.4"
+    "inquirer": "^8.2.4",
+    "jest": "^29.0.3"
   }
 }

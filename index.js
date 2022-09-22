@@ -1,8 +1,8 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
 var validator = require("email-validator");
-
-const generateHTML = ({ name, employeeid, email, officenumber }) => `
+const Manager = require("./lib/Manager");
+const generateHTML = ({ name, employeeid, email, officenumber, role }) => `
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,7 +10,7 @@ const generateHTML = ({ name, employeeid, email, officenumber }) => `
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Bootstrap demo</title>
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+      href=https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css
       rel="stylesheet"
       integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
       crossorigin="anonymous"
@@ -25,11 +25,11 @@ const generateHTML = ({ name, employeeid, email, officenumber }) => `
     </nav>
     <div class="flex-container">
       <div class="card" style="width: 18rem">
-        <div class="card-header manager">Manager</div>
+        <div class="card-header manager">${Manager.name}</div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">Name: ${name}</li>
           <li class="list-group-item">Employee ID: ${employeeid}</li>
-          <li class="list-group-item">Email Address:<a href="mailto:${email}">${email}</a></li>
+          <li class="list-group-item">Email Address:<a href=mailto:${email}>${email}</a></li>
           <li class="list-group-item">Office Number: ${officenumber} </li>
         </ul>
       </div>
@@ -39,9 +39,9 @@ const generateHTML = ({ name, employeeid, email, officenumber }) => `
 
 `;
 const footer = () => ` </div>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src=https://code.jquery.com/jquery-3.5.1.min.js></script>
   <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+    src=https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js
     integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
     crossorigin="anonymous"
   ></script>
@@ -58,7 +58,7 @@ const engineer = ({
 <ul class="list-group list-group-flush">
   <li class="list-group-item">Name: ${nameeng}</li>
   <li class="list-group-item">Employee ID: ${employeeideng}</li>
-  <li class="list-group-item">Email Address:<a href="mailto:${emaileng}">${emaileng}</a></li>
+  <li class="list-group-item">Email Address:<a href=mailto:${emaileng}>${emaileng}</a></li>
   <li class="list-group-item">Office Number: ${officenumbereng} </li>
 </ul>
 </div>`;
@@ -68,12 +68,13 @@ const intern = ({
   employeeidint,
   emailint,
   officenumberint,
+  getRole,
 }) => `  <div class="card" style="width: 18rem">
 <div class="card-header intern">Intern</div>
 <ul class="list-group list-group-flush">
-  <li class="list-group-item">Name: ${nameint}</li>
+  <li class="list-group-item">Name: ${getRole}</li>
   <li class="list-group-item">Employee ID: ${employeeidint}</li>
-  <li class="list-group-item">Email Address:<a href="mailto:${emailint}">${emailint}</a></li>
+  <li class="list-group-item">Email Address:<a href=mailto:${emailint}>${emailint}</a></li>
   <li class="list-group-item">Office Number: ${officenumberint} </li>
 </ul>
 </div>`;
@@ -120,7 +121,18 @@ function managerInput() {
       },
     ])
     .then(async (answers) => {
-      const html = generateHTML(answers);
+      const newteamMember = new Manager(
+        answers.name,
+        answers.employeeid,
+        answers.email,
+        answers.officenumber
+        // Manager.role
+      );
+      console.log(newteamMember);
+      console.log(newteamMember.role);
+      console.log(newteamMember.getRole());
+
+      const html = generateHTML(answers, Manager);
       fs.writeFile("index.html", html, (err) => {
         err ? console.log(err) : console.log("");
       });
