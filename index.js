@@ -2,7 +2,9 @@ const fs = require("fs");
 const inquirer = require("inquirer");
 var validator = require("email-validator");
 const Manager = require("./lib/Manager");
-const generateHTML = ({ name, employeeid, email, officenumber, role }) => `
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
+const generateHTML = ({ name, employeeid, email, officenumber }) => `
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -29,7 +31,7 @@ const generateHTML = ({ name, employeeid, email, officenumber, role }) => `
         <ul class="list-group list-group-flush">
           <li class="list-group-item">Name: ${name}</li>
           <li class="list-group-item">Employee ID: ${employeeid}</li>
-          <li class="list-group-item">Email Address:<a href=mailto:${email}>${email}</a></li>
+          <li class="list-group-item">Email: <a href=mailto:${email}>${email}</a></li>
           <li class="list-group-item">Office Number: ${officenumber} </li>
         </ul>
       </div>
@@ -52,14 +54,14 @@ const engineer = ({
   nameeng,
   employeeideng,
   emaileng,
-  officenumbereng,
+  github,
 }) => `  <div class="card" style="width: 18rem">
-<div class="card-header engineer">Engineer</div>
+<div class="card-header engineer">${Engineer.name}</div>
 <ul class="list-group list-group-flush">
   <li class="list-group-item">Name: ${nameeng}</li>
   <li class="list-group-item">Employee ID: ${employeeideng}</li>
-  <li class="list-group-item">Email Address:<a href=mailto:${emaileng}>${emaileng}</a></li>
-  <li class="list-group-item">Office Number: ${officenumbereng} </li>
+  <li class="list-group-item">Email: <a href=mailto:${emaileng}>${emaileng}</a></li>
+  <li class="list-group-item">Github ID: ${github} </li>
 </ul>
 </div>`;
 
@@ -67,15 +69,14 @@ const intern = ({
   nameint,
   employeeidint,
   emailint,
-  officenumberint,
-  getRole,
+  school,
 }) => `  <div class="card" style="width: 18rem">
-<div class="card-header intern">Intern</div>
+<div class="card-header intern">${Intern.name}</div>
 <ul class="list-group list-group-flush">
-  <li class="list-group-item">Name: ${getRole}</li>
+  <li class="list-group-item">Name: ${nameint}</li>
   <li class="list-group-item">Employee ID: ${employeeidint}</li>
-  <li class="list-group-item">Email Address:<a href=mailto:${emailint}>${emailint}</a></li>
-  <li class="list-group-item">Office Number: ${officenumberint} </li>
+  <li class="list-group-item">Email: <a href=mailto:${emailint}>${emailint}</a></li>
+  <li class="list-group-item">School: ${school} </li>
 </ul>
 </div>`;
 
@@ -86,22 +87,54 @@ function managerInput() {
         name: "name",
         message: "Manager Name?",
         type: "input",
+        validate: function (text) {
+          if (isNaN(text)) {
+            return true;
+          } else {
+            console.log(".  Please enter a valid name");
+            return false;
+          }
+        },
       },
       {
         name: "employeeid",
         message: "Employee ID?",
         type: "input",
+        validate: function (number) {
+          if (!isNaN(number)) {
+            return true;
+          } else {
+            console.log(".  Please enter a number");
+          }
+        },
       },
       {
         name: "email",
         message: "Email Address?",
         type: "input",
-        //   validate: emailValidator,
+        validate: function (email) {
+          valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+          if (valid) {
+            // console.log("Great job");
+            return true;
+          } else {
+            console.log(".  Please enter a valid email");
+            return false;
+          }
+        },
       },
       {
         name: "officenumber",
         message: "Office Number",
         type: "input",
+        validate: function (number) {
+          if (!isNaN(number)) {
+            return true;
+          } else {
+            console.log(".  Please enter a number");
+            return false;
+          }
+        },
       },
       {
         name: "menu",
@@ -126,13 +159,12 @@ function managerInput() {
         answers.employeeid,
         answers.email,
         answers.officenumber
-        // Manager.role
       );
       console.log(newteamMember);
-      console.log(newteamMember.role);
+      console.log(newteamMember.getOfficeNumber());
       console.log(newteamMember.getRole());
 
-      const html = generateHTML(answers, Manager);
+      const html = generateHTML(answers, newteamMember);
       fs.writeFile("index.html", html, (err) => {
         err ? console.log(err) : console.log("");
       });
@@ -156,22 +188,56 @@ function engineerInput() {
         name: "nameeng",
         message: "Engineer Name?",
         type: "input",
+        validate: function (text) {
+          if (isNaN(text)) {
+            return true;
+          } else {
+            console.log(".  Please enter a valid name");
+            return false;
+          }
+        },
       },
       {
         name: "employeeideng",
         message: "Employee ID?",
         type: "input",
+        validate: function (number) {
+          if (!isNaN(number)) {
+            return true;
+          } else {
+            console.log(".  Please enter a number");
+            return false;
+          }
+        },
       },
       {
         name: "emaileng",
         message: "Email Address?",
         type: "input",
-        //   validate: emailValidator,
+        validate: function (email) {
+          valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+
+          if (valid) {
+            // console.log("Great job");
+            return true;
+          } else {
+            console.log(".  Please enter a valid email");
+            return false;
+          }
+        },
       },
       {
-        name: "officenumbereng",
-        message: "Office Number",
+        name: "github",
+        message: "Github ID?",
         type: "input",
+        validate: function (text) {
+          if (isNaN(text)) {
+            return true;
+          } else {
+            console.log(".  Please enter a valid Github ID");
+            return false;
+          }
+        },
       },
       {
         name: "menu",
@@ -191,8 +257,16 @@ function engineerInput() {
       },
     ])
     .then(async (answerseng) => {
-      const htmleng = engineer(answerseng);
-
+      const newteamMember = new Engineer(
+        answerseng.nameeng,
+        answerseng.employeeideng,
+        answerseng.emaileng,
+        answerseng.github
+      );
+      const htmleng = engineer(answerseng, newteamMember);
+      console.log(newteamMember);
+      console.log(newteamMember.getGithub());
+      console.log(newteamMember.getRole());
       fs.appendFile("index.html", htmleng, (err) => {
         err ? console.log(err) : console.log("");
       });
@@ -213,22 +287,56 @@ function internInput() {
         name: "nameint",
         message: "Intern Name?",
         type: "input",
+        validate: function (text) {
+          if (isNaN(text)) {
+            return true;
+          } else {
+            console.log(".  Please enter a valid name");
+            return false;
+          }
+        },
       },
       {
         name: "employeeidint",
         message: "Employee ID?",
         type: "input",
+        validate: function (number) {
+          if (!isNaN(number)) {
+            return true;
+          } else {
+            console.log(".  Please enter a number");
+            return false;
+          }
+        },
       },
       {
         name: "emailint",
         message: "Email Address?",
         type: "input",
-        //   validate: emailValidator,
+        validate: function (email) {
+          valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+
+          if (valid) {
+            // console.log("Great job");
+            return true;
+          } else {
+            console.log(".  Please enter a valid email");
+            return false;
+          }
+        },
       },
       {
-        name: "officenumberint",
-        message: "Office Number",
+        name: "school",
+        message: "School?",
         type: "input",
+        validate: function (text) {
+          if (isNaN(text)) {
+            return true;
+          } else {
+            console.log(".  Please enter a valid school");
+            return false;
+          }
+        },
       },
       {
         name: "menu",
@@ -248,7 +356,16 @@ function internInput() {
       },
     ])
     .then(async (answersint) => {
-      const htmlint = intern(answersint);
+      const newteamMember = new Intern(
+        answersint.nameint,
+        answersint.employeeidint,
+        answersint.emailint,
+        answersint.school
+      );
+      const htmlint = intern(answersint, newteamMember);
+      console.log(newteamMember);
+      console.log(newteamMember.getSchool());
+      console.log(newteamMember.getRole());
       fs.appendFile("index.html", htmlint, (err) => {
         err ? console.log(err) : console.log("");
       });

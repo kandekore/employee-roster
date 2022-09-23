@@ -13,7 +13,7 @@ describe("Manager", () => {
     const example = new Manager("bob", 2, "bob@bob.com", 302);
     expect(example.getEmail()).toBe("bob@bob.com");
   });
-  test("Make sure ID is correct", () => {
+  test("Make sure Role is correct", () => {
     const example = new Manager("bob", 2, "bob@bob.com", 302);
     expect(example.getRole()).toBe("Manager");
   });
