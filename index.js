@@ -127,14 +127,14 @@ function managerInput() {
         name: "officenumber",
         message: "Office Number",
         type: "input",
-        validate: function (number) {
-          if (!isNaN(number)) {
-            return true;
-          } else {
-            console.log(".  Please enter a number");
-            return false;
-          }
-        },
+        // validate: function (number) {
+        //   if (!isNaN(number)) {
+        //     return true;
+        //   } else {
+        //     console.log(".  Please enter a number");
+        //     return false;
+        //   }
+        // },
       },
       {
         name: "menu",
@@ -160,9 +160,9 @@ function managerInput() {
         answers.email,
         answers.officenumber
       );
-      console.log(newteamMember);
-      console.log(newteamMember.getOfficeNumber());
-      console.log(newteamMember.getRole());
+      // console.log(newteamMember);
+      // console.log(newteamMember.getOfficeNumber());
+      // console.log(newteamMember.getRole());
 
       const html = generateHTML(answers, newteamMember);
       fs.writeFile("index.html", html, (err) => {
@@ -264,9 +264,9 @@ function engineerInput() {
         answerseng.github
       );
       const htmleng = engineer(answerseng, newteamMember);
-      console.log(newteamMember);
-      console.log(newteamMember.getGithub());
-      console.log(newteamMember.getRole());
+      // console.log(newteamMember);
+      // console.log(newteamMember.getGithub());
+      // console.log(newteamMember.getRole());
       fs.appendFile("index.html", htmleng, (err) => {
         err ? console.log(err) : console.log("");
       });
@@ -363,9 +363,9 @@ function internInput() {
         answersint.school
       );
       const htmlint = intern(answersint, newteamMember);
-      console.log(newteamMember);
-      console.log(newteamMember.getSchool());
-      console.log(newteamMember.getRole());
+      // console.log(newteamMember);
+      // console.log(newteamMember.getSchool());
+      // console.log(newteamMember.getRole());
       fs.appendFile("index.html", htmlint, (err) => {
         err ? console.log(err) : console.log("");
       });

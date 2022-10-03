@@ -22,7 +22,7 @@ An application to dynamically generate a roster for different level of employees
 
 ## Usage
 
-For a video of how to use the application please follow [this link.](tbc)
+For a video of how to use the application please follow [this link.](https://drive.google.com/file/d/1qu6P_wZOoBan02rsiJPA01PlHZhKxB35/view)
 
 via terminal
 
