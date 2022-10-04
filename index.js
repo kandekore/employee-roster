@@ -61,7 +61,7 @@ const engineer = ({
   <li class="list-group-item">Name: ${nameeng}</li>
   <li class="list-group-item">Employee ID: ${employeeideng}</li>
   <li class="list-group-item">Email: <a href=mailto:${emaileng}>${emaileng}</a></li>
-  <li class="list-group-item">Github ID: ${github} </li>
+  <li class="list-group-item">Github ID: <a href="https://github.com/${github}"> ${github}</a></li>
 </ul>
 </div>`;
 
